@@ -36,6 +36,7 @@ export default class Game extends React.Component {
     }
 
     handleSubmit(){
+        
         console.log('value in handleSubmit:', this.state.value);
         console.log('old:', this.state.guesses);
         console.log(Math.abs(this.state.value - this.state.answer));
@@ -43,6 +44,17 @@ export default class Game extends React.Component {
         this.setState({count: this.state.count + 1});
         this.setState({guesses: newGuesses});
         this.checkAnswer();
+        document.getElementById('userGuess').value = '';
+    }
+
+    resetState(){
+        this.setState({
+            value: null,
+            count: 0,
+            answer: this.generateAnswer(),
+            guesses: [],
+            feedback: 'Make your guess!'
+        });
     }
 
     render(){
@@ -53,7 +65,7 @@ export default class Game extends React.Component {
 
         return (
             <div>
-                <Header />
+                <Header newGame={()=> this.resetState()}/>
                 <GuessSection feedback={this.state.feedback} valueGuessed={value => this.setState({value})} handleSubmit={()=> this.handleSubmit()}/>
                 <GuessCount count={this.state.count} />
                 <GuessList guesses={this.state.guesses} />
