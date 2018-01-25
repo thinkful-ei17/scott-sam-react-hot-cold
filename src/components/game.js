@@ -16,11 +16,16 @@ export default class Game extends React.Component {
         }
     };
 
+    handleSubmit(){
+        console.log('handleSubmit tracks');
+    }
+
     render(){
+        console.log('this value:', this.state.value);
         return (
             <div>
                 <Header />
-                <GuessSection feedback={this.state.feedback} valueGuessed={value => this.setState({value})}/>
+                <GuessSection feedback={this.state.feedback} valueGuessed={value => this.setState({value})} handleSubmit={()=> this.handleSubmit()}/>
                 <GuessCount count={this.state.count} />
                 <GuessList guesses={this.state.guesses} />
             </div>
