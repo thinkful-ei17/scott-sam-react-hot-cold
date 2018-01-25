@@ -9,11 +9,11 @@ export default class Game extends React.Component {
     constructor(props){
         super(props);
         this.state ={
-            value: null,
-            count: 0,
+            value: '',
             answer: this.generateAnswer(),
             guesses: [],
-            feedback: 'Make your guess!'
+            feedback: 'Make your guess!',
+            showModal: false
         }
     };
 
@@ -23,51 +23,57 @@ export default class Game extends React.Component {
 
     checkAnswer(){
         if (this.state.value === this.state.answer){
-            this.setState({feedback: 'CORRECT! CONGRATULATIONS!'});
+            return 'CORRECT! CONGRATULATIONS!';
         } else if (Math.abs(this.state.value - this.state.answer) < 10){
-            this.setState({feedback: 'HOT!'});
+            return 'HOT!';
         } else if (Math.abs(this.state.value - this.state.answer) < 20){
-            this.setState({feedback: 'Getting Warmer'})
+            return 'Getting Warmer';
         } else if (Math.abs(this.state.value - this.state.answer) > 90){
-            this.setState({feedback: 'ICE, ICE, BABY!'});
+            return 'ICE, ICE, BABY!';
         } else {
-            this.setState({feedback: 'Cold'});
-        }
+            return 'Cold';
+        }  
     }
 
-    handleSubmit(){
-        
-        console.log('value in handleSubmit:', this.state.value);
-        console.log('old:', this.state.guesses);
-        console.log(Math.abs(this.state.value - this.state.answer));
+    handleSubmit(){ 
+        // console.log('value in handleSubmit:', this.state.value);
+        // console.log('old:', this.state.guesses);
+        // console.log(Math.abs(this.state.value - this.state.answer));
+        // console.log('oldstate:', this.state);
         const newGuesses = [...this.state.guesses, this.state.value];
-        this.setState({count: this.state.count + 1});
-        this.setState({guesses: newGuesses});
-        this.checkAnswer();
-        document.getElementById('userGuess').value = '';
+        this.setState({
+            value: '',
+            guesses: newGuesses,
+            feedback: this.checkAnswer()
+         });
+        // console.log('newstate:',this.state);
     }
 
     resetState(){
         this.setState({
-            value: null,
-            count: 0,
+            value: '',
             answer: this.generateAnswer(),
             guesses: [],
             feedback: 'Make your guess!'
         });
     }
 
-    render(){
-        console.log('answer:', this.state.answer);
-        console.log('this value in render:', this.state.value);
-        console.log('new:', this.state.guesses);
-        console.log('count:', this.state.count);
+    toggleShowModal(){
+        // console.log('what');
+        this.setState({
+            showModal: !this.state.showModal
+        });
+    }
 
+    render(){
+        // console.log('answer:', this.state.answer);
+        // console.log('this value in render:', this.state.value);
+        // console.log('new:', this.state.guesses);
         return (
             <div>
-                <Header newGame={()=> this.resetState()}/>
-                <GuessSection feedback={this.state.feedback} valueGuessed={value => this.setState({value})} handleSubmit={()=> this.handleSubmit()}/>
-                <GuessCount count={this.state.count} />
+                <Header newGame={()=> this.resetState()} handleClick={()=> this.toggleShowModal()} showModal={this.state.showModal}/>
+                <GuessSection feedback={this.state.feedback} stateValue= {this.state.value} valueGuessed={value => this.setState({value})} handleSubmit={()=> this.handleSubmit()}/>
+                <GuessCount count={this.state.guesses.length} />
                 <GuessList guesses={this.state.guesses} />
             </div>
         );
