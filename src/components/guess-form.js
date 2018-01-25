@@ -12,7 +12,7 @@ export default function GuessForm(props) {
         }}>
             <input type="text" name="userGuess" id="userGuess"
                 className="text" maxLength="3" autoComplete="off"
-                placeholder="Enter your Guess" required onChange={e => props.valueGuessed(e.target.value)}/>
+                placeholder="Enter your Guess" required onChange={e => props.valueGuessed(parseInt(e.target.value))}/>
             <input type="submit" id="guessButton" className="button" name="submit" value="Guess"/> 
         </form>
     );
