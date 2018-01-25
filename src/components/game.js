@@ -17,11 +17,17 @@ export default class Game extends React.Component {
     };
 
     handleSubmit(){
-        console.log('handleSubmit tracks');
+        console.log('value in handleSubmit:', this.state.value);
+        console.log('old:', this.state.guesses);
+        const newGuesses = [...this.state.guesses, this.state.value];
+        this.setState({count: this.state.count + 1});
+        this.setState({guesses: newGuesses}); 
     }
 
     render(){
-        console.log('this value:', this.state.value);
+        console.log('this value in render:', this.state.value);
+        console.log('new:', this.state.guesses);
+        console.log('count:', this.state.count);
         return (
             <div>
                 <Header />
